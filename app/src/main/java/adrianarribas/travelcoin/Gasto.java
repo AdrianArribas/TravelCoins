@@ -1,10 +1,17 @@
 package adrianarribas.travelcoin;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Adrian on 20/09/2017.
  */
 
-public class Gasto {
+/**
+ * Implementa Parcelable porque es la manera de mandar datos en Android (mucho mas eficiente que
+ * Serializable)
+ */
+public class Gasto implements Parcelable{
     String fecha;
     String compra;
     String fotourl;
@@ -98,4 +105,76 @@ public class Gasto {
     public void setExtraDouble(Double extraDouble) {
         this.extraDouble = extraDouble;
     }
+
+
+    /*
+     * Implementación de Parcelable
+     */
+    protected Gasto(Parcel in) {
+        fecha = in.readString();
+        compra = in.readString();
+        fotourl = in.readString();
+        extraString = in.readString();
+        precioyen = in.readByte() == 0x00 ? null : in.readDouble();
+        precioeuro = in.readByte() == 0x00 ? null : in.readDouble();
+        lat = in.readByte() == 0x00 ? null : in.readDouble();
+        lng = in.readByte() == 0x00 ? null : in.readDouble();
+        extraDouble = in.readByte() == 0x00 ? null : in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(fecha);
+        dest.writeString(compra);
+        dest.writeString(fotourl);
+        dest.writeString(extraString);
+        if (precioyen == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(precioyen);
+        }
+        if (precioeuro == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(precioeuro);
+        }
+        if (lat == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(lat);
+        }
+        if (lng == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(lng);
+        }
+        if (extraDouble == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(extraDouble);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Gasto> CREATOR = new Parcelable.Creator<Gasto>() {
+        @Override
+        public Gasto createFromParcel(Parcel in) {
+            return new Gasto(in);
+        }
+
+        @Override
+        public Gasto[] newArray(int size) {
+            return new Gasto[size];
+        }
+    };
 }

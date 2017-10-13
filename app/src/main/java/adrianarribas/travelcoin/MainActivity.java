@@ -1,5 +1,6 @@
 package adrianarribas.travelcoin;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     CheckBox ChBebida,ChComida,ChTransporte,ChSouvenir,ChEntrada;
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         precioTransporte=0;
         precioSouvenir=0;
         precioEntrada=0;
-        precioTotal=0;
+        precioTotal=0.0;
 
         SeekBebida.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -191,7 +197,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void añadir(View v){
         if(precioTotal>0){
-            new Gasto ("X/X/X",detalles,"fotoURL","vacio",precioTotal,precioTotal*10*0.00760,0.0,0.0,0.0);
+            Calendar calendar = Calendar.getInstance();
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+            String fecha = formatter.format(calendar.getTime());
+            Gasto g = new Gasto (fecha,detalles,"fotoURL","vacio",precioTotal,precioTotal*10*0.00760,0.0,0.0,0.0);
+
+            Intent intent = new Intent (this, ListaActivity.class);
+            intent.putExtra("Gasto", g);
+            startActivity(intent);
         }
     }
 
