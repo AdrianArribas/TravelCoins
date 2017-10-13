@@ -13,7 +13,9 @@ public class MainActivity extends AppCompatActivity {
     SeekBar SeekBebida,SeekComida,SeekTransporte,SeekSouvenir,SeekEntrada;
     TextView TvBebida,TvComida,TvTransporte,TvSouvenir,TvEntrada,TvEuros;
     EditText edtDetalle,edtPrecio;
-    int precioBebida,precionComida,precioTransporte,precioSouvenir,precioEntrada,precioTotal;
+    String detalles="";
+    int precioBebida,precionComida,precioTransporte,precioSouvenir,precioEntrada;
+    Double precioTotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,12 +157,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     public void operaciones(View v) {
-        String detalles="";
-        precioTotal = 0;
+        precioTotal = 0.0;
         if (ChBebida.isChecked()) {
             precioTotal += precioBebida;
             detalles+=" Bebida/";
@@ -187,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
         TvEuros.setText("Total de éste gasto en Euros: "+Euros+" € en: "+ detalles  );
         edtDetalle.setText(detalles);
 
+    }
+
+    public void añadir(View v){
+        if(precioTotal>0){
+            new Gasto ("X/X/X",detalles,"fotoURL","vacio",precioTotal,precioTotal*10*0.00760,0.0,0.0,0.0);
+        }
     }
 
 }

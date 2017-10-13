@@ -217,6 +217,7 @@
                     android:id="@+id/editTextPrecio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="number"
@@ -228,8 +229,10 @@
                     android:id="@+id/buttonRefres"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@android:drawable/ic_menu_rotate"
+                    android:backgroundTint="@android:color/holo_orange_dark"
                     android:onClick="operaciones" />
             </LinearLayout>
 
@@ -245,6 +248,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TOTAL: 000 EUROS" />
+
+                <CheckBox
+                    android:id="@+id/CheckLocation"
+                    style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@android:drawable/checkbox_off_background"
+                    android:text="Guardar Ubicación" />
             </LinearLayout>
 
             <Button

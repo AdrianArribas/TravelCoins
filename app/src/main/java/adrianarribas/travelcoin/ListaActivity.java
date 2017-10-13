@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ListaActivity extends AppCompatActivity {
     ArrayList<Gasto>Gastos= new ArrayList<>();
     RecyclerView rv = (RecyclerView)findViewById(R.id.RecView);
-    LinearLayoutManager llm= new LinearLayoutManager(this);
+    LinearLayoutManager llm= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
     RVAdapter adapter = new RVAdapter(Gastos);
 
     @Override
