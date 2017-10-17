@@ -15,10 +15,11 @@ public class ListaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista);
+        GestionGastos GC=new GestionGastos(this);
 
-        ArrayList<Gasto>Gastos= new ArrayList<>();
+        ArrayList<Gasto>Gastos=GC.obtenerGastos();
 
-        Gastos.add((Gasto) this.getIntent().getParcelableExtra("Gasto"));
+        //Gastos.add((Gasto) this.getIntent().getParcelableExtra("Gasto"));
 
         RecyclerView rv = (RecyclerView)findViewById(R.id.RecView);
         LinearLayoutManager llm= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

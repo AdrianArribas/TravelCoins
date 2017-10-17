@@ -201,11 +201,39 @@ public class MainActivity extends AppCompatActivity {
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
             String fecha = formatter.format(calendar.getTime());
             Gasto g = new Gasto (fecha,detalles,"fotoURL","vacio",precioTotal,precioTotal*10*0.00760,0.0,0.0,0.0);
-
+            GestionGastos GC=new GestionGastos(this);
+            GC.NuevoGasto(g);
+            borrar();
+            fecha="";
             Intent intent = new Intent (this, ListaActivity.class);
-            intent.putExtra("Gasto", g);
             startActivity(intent);
         }
+    }
+    public void borrar(){
+        //---------------------PONEMOS TOD A CERO-------------
+
+        ChBebida.setActivated(false);
+        ChComida.setActivated(false);
+        ChTransporte.setActivated(false);
+        ChSouvenir.setActivated(false);
+        ChEntrada.setActivated(false);
+
+        SeekBebida.setProgress(0);
+        SeekComida.setProgress(0);
+        SeekTransporte.setProgress(0);
+        SeekSouvenir.setProgress(0);
+        SeekEntrada.setProgress(0);
+
+        TvBebida.setText("");
+        TvComida.setText("");
+        TvTransporte.setText("");
+        TvSouvenir.setText("");
+        TvEntrada.setText("");
+        TvEuros.setText("");
+
+        edtDetalle.setText("");
+        edtPrecio.setText("");
+        detalles="";
     }
 
 }
