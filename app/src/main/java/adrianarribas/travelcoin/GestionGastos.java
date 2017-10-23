@@ -37,6 +37,40 @@ public class GestionGastos {
         return AR;
     }
 
+    public ArrayList<Gasto> calGasto(){
+        ArrayList<Gasto> AR = new ArrayList<>();
+        String sql = "select * from gastos";
+        Cursor c = BD.rawQuery(sql, null);
+        Gasto G = null;
+        while (c.moveToNext()) {
+            G = new Gasto(c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getDouble(5), c.getDouble(6), c.getDouble(7), c.getDouble(8), c.getDouble(9));
+            AR.add(G);
+        }
+        return AR;
+    }
+    public double gastoTotalEur() {
+        ArrayList<Gasto> AR;
+        AR=this.calGasto();
+        double TotalEur=0.0;
+        for (int i=0;i<AR.size();i++){
+            TotalEur=TotalEur+AR.get(i).getPrecioeuro();
+        }
+        return TotalEur;
+    }
+    public double gastoTotalYen() {
+        ArrayList<Gasto> AR;
+        AR=this.calGasto();
+        double TotalYen=0.0;
+        for (int i=0;i<AR.size();i++){
+            TotalYen=TotalYen+AR.get(i).getPrecioyen();
+        }
+        return TotalYen;
+    }
+
+
+    public void borrarGasto(String compra, double precioyen){
+        String sql="delete from gastos where compra='"+compra+"' and precioyen='"+precioyen+"'";
+    }
 
     /*String creaTablaSql="create table gastos (";
         creaTablaSql+="_id integer primary key autoincrement,";

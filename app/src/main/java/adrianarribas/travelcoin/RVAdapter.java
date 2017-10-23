@@ -26,9 +26,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.visTargeta> {
     public void onBindViewHolder(visTargeta vvisTargeta, int i) {
 
         vvisTargeta.foto.setImageDrawable(null);
-        vvisTargeta.fecha.setText(Gastos.get(i).getFecha());
-        vvisTargeta.compra.setText(Gastos.get(i).getCompra());
-        vvisTargeta.cantidad.setText(Gastos.get(i).getPrecioyen()+"Y / "+Gastos.get(i).getPrecioeuro()+"€");
+        vvisTargeta.fecha.setText("Fecha y hora: "+Gastos.get(i).getFecha());
+        vvisTargeta.compra.setText("Artículo: "+Gastos.get(i).getCompra());
+        vvisTargeta.cantidad.setText("Precio total: "+Gastos.get(i).getPrecioyen()+"Y / "+Gastos.get(i).getPrecioeuro()+"€");
 
     }
 

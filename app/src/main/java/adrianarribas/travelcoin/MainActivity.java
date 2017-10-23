@@ -1,6 +1,9 @@
 package adrianarribas.travelcoin;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,24 +11,32 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static android.R.attr.duration;
+
 public class MainActivity extends AppCompatActivity {
     CheckBox ChBebida,ChComida,ChTransporte,ChSouvenir,ChEntrada;
     SeekBar SeekBebida,SeekComida,SeekTransporte,SeekSouvenir,SeekEntrada;
-    TextView TvBebida,TvComida,TvTransporte,TvSouvenir,TvEntrada,TvEuros;
+    TextView TvBebida,TvComida,TvTransporte,TvSouvenir,TvEntrada,TvEuros,TvTotales;
     EditText edtDetalle,edtPrecio;
-    String detalles="";
+    String detalles="nul";
     int precioBebida,precionComida,precioTransporte,precioSouvenir,precioEntrada;
-    Double precioTotal;
+    Double precioTotal,Euros,Yens;
+    Context ctx;
+    GestionGastos GC;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ctx=this;
+        GC=new GestionGastos(ctx);
 
         //-----------------------INICIALIZAMOS LOS COMPONENTES---------------------
         ChBebida=(CheckBox)this.findViewById(R.id.checkBebida);
@@ -46,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         TvSouvenir=(TextView) this.findViewById(R.id.textVSouvenir);
         TvEntrada=(TextView) this.findViewById(R.id.textVEntrada);
         TvEuros=(TextView) this.findViewById(R.id.textVEuros);
+        TvTotales=(TextView) this.findViewById(R.id.tvTotales);
 
         edtDetalle=(EditText) this.findViewById(R.id.editTextDetalles);
         edtPrecio=(EditText) this.findViewById(R.id.editTextPrecio);
@@ -56,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         precioSouvenir=0;
         precioEntrada=0;
         precioTotal=0.0;
+
+        totales();
 
         SeekBebida.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -167,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void operaciones(View v) {
         precioTotal = 0.0;
+        detalles="";
         if (ChBebida.isChecked()) {
             precioTotal += precioBebida;
             detalles+=" Bebida/";
@@ -188,27 +203,51 @@ public class MainActivity extends AppCompatActivity {
             detalles+=" Entradas/";
         }
         edtPrecio.setText(precioTotal*10+"");
-        double Euros;
-        Euros=precioTotal*10*0.00760;
+        Yens=precioTotal*10;
+        Euros=Yens*0.00750;
         TvEuros.setText("Total de éste gasto en Euros: "+Euros+" € en: "+ detalles  );
         edtDetalle.setText(detalles);
 
     }
+    public void verGastos(View v){
+        borrar();
+        Intent intent = new Intent (this, ListaActivity.class);
+        startActivity(intent);
+    }
 
     public void añadir(View v){
-        if(precioTotal>0){
-            Calendar calendar = Calendar.getInstance();
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
-            String fecha = formatter.format(calendar.getTime());
-            Gasto g = new Gasto (fecha,detalles,"fotoURL","vacio",precioTotal,precioTotal*10*0.00760,0.0,0.0,0.0);
-            GestionGastos GC=new GestionGastos(this);
-            GC.NuevoGasto(g);
-            borrar();
-            fecha="";
-            Intent intent = new Intent (this, ListaActivity.class);
-            startActivity(intent);
-        }
+
+        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+        dialogo1.setTitle("Importante");
+        dialogo1.setMessage("¿ Seguro que quieres añadir el gasto ?");
+        dialogo1.setCancelable(false);
+        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                if(precioTotal>0&&!detalles.equals("nul")){
+                    Calendar calendar = Calendar.getInstance();
+                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+                    String fecha = formatter.format(calendar.getTime());
+                    Gasto g = new Gasto (fecha,detalles,"fotoURL","vacio",Yens,Euros,0.0,0.0,0.0);
+                    GestionGastos GC=new GestionGastos(ctx);
+                    GC.NuevoGasto(g);
+                    borrar();
+                    fecha="";
+                    Intent intent = new Intent (ctx, ListaActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast toast = Toast.makeText(ctx, "no hay ningun texto, pulsa el circulo para añadir texto o hazlo a mano :D", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
+        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+
+            }
+        });
+        dialogo1.show();
     }
+
     public void borrar(){
         //---------------------PONEMOS TOD A CERO-------------
 
@@ -233,7 +272,15 @@ public class MainActivity extends AppCompatActivity {
 
         edtDetalle.setText("");
         edtPrecio.setText("");
-        detalles="";
+        detalles="nul";
+        totales();
+    }
+    public void borrar2(View v){
+        borrar();
+
+    }
+    public void totales(){
+        TvTotales.setText("Gastos totales: "+ GC.gastoTotalEur()+" Euros / "+GC.gastoTotalYen()+" Yens");
     }
 
 }
