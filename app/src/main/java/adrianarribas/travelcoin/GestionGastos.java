@@ -16,6 +16,7 @@ public class GestionGastos {
     public GestionGastos (Context ctx){
         helper=new Helper(ctx,"Gastos");
         BD=helper.getWritableDatabase();
+        
     }
     public void NuevoGasto(Gasto G){
         String sql= "insert into gastos (fecha,compra,fotourl,extrastring,precioyen,precioeuro,lat,lng,extradouble)";
