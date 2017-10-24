@@ -24,11 +24,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.visTargeta> {
 
     @Override
     public void onBindViewHolder(visTargeta vvisTargeta, int i) {
-
+        Double Euros=Gastos.get(i).getPrecioeuro();
         vvisTargeta.foto.setImageDrawable(null);
         vvisTargeta.fecha.setText("Fecha y hora: "+Gastos.get(i).getFecha());
         vvisTargeta.compra.setText("Artículo: "+Gastos.get(i).getCompra());
-        vvisTargeta.cantidad.setText("Precio total: "+Gastos.get(i).getPrecioyen()+"Y / "+Gastos.get(i).getPrecioeuro()+"€");
+        vvisTargeta.cantidad.setText("Precio total: "+Gastos.get(i).getPrecioyen()+"Y / "+String.format("%.2f",Euros)+"€");
 
     }
 

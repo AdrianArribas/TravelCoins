@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="adrianarribas.travelcoin.MainActivity"
-    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteY="8dp"
     tools:layout_editor_absoluteX="0dp">
 
     <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="490dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="10dp">
@@ -20,6 +20,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:padding="8dp"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
@@ -27,13 +28,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp">
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="true"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@mipmap/foto" />
+
                 <TextView
                     android:id="@+id/tvTotales"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Gasto total"
@@ -280,14 +290,6 @@
                 android:text=" Ver Gastos" />
 
             <Button
-                android:id="@+id/btnBorrar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="borrar2"
-                android:text="Borrar" />
-
-            <Button
                 android:id="@+id/buttonAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -297,8 +299,31 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="447dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="enviarEmail"
+                    android:text="Mail" />
+
+                <Button
+                    android:id="@+id/btnBorrar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="borrar2"
+                    android:text="Borrar" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</android.widget.RelativeLayout>

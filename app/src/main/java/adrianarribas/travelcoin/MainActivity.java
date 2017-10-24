@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             precioTotal += precioEntrada;
             detalles+=" Entradas/";
         }
-        edtPrecio.setText(precioTotal*10+"");
+        edtPrecio.setText(String.format("%.0f",precioTotal*10));
         Yens=precioTotal*10;
         Euros=Yens*0.00750;
         TvEuros.setText("Total de éste gasto en Euros: "+Euros+" € en: "+ detalles  );
@@ -224,6 +224,9 @@ public class MainActivity extends AppCompatActivity {
         dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
                 if(precioTotal>0&&!detalles.equals("nul")){
+                    Yens=Double.parseDouble(edtPrecio.getText().toString());
+                    Euros=Yens*0.00750;
+                    detalles=edtDetalle.getText().toString();
                     Calendar calendar = Calendar.getInstance();
                     DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
                     String fecha = formatter.format(calendar.getTime());
@@ -280,8 +283,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void totales(){
-        TvTotales.setText("Gastos totales: "+ GC.gastoTotalEur()+" Euros / "+GC.gastoTotalYen()+" Yens");
+        double Eur=GC.gastoTotalEur();
+        TvTotales.setText("GASTO TOTAL: "+ String.format("%.2f",Eur)+" Eur / "+GC.gastoTotalYen()+" Yen");
     }
+
+    public void enviarEmail(View v){
+        Calendar calendar = Calendar.getInstance();
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+        String fecha = formatter.format(calendar.getTime());
+        //Instanciamos un Intent del tipo ACTION_SEND
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        //Definimos la tipologia de datos del contenido dle Email en este caso text/html
+        emailIntent.setType("message/rfc822");
+        // Indicamos con un Array de tipo String las direcciones de correo a las cuales
+        //queremos enviar el texto
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Susana_R_F@hotmail.com"});
+        // Definimos un titulo para el Email
+        emailIntent.putExtra(android.content.Intent.EXTRA_TITLE, "Gastos viaje a Japon");
+        // Definimos un Asunto para el Email
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Gastos a fecha: "+fecha);
+        // Obtenemos la referencia al texto y lo pasamos al Email Intent
+        String mail=GC.gastoEmail();
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, mail);
+        try {
+            //Enviamos el Correo iniciando una nueva Activity con el emailIntent.
+            startActivity(Intent.createChooser(emailIntent, "Enviar E-mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MainActivity.this, "No hay ningun cliente de correo instalado.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
 

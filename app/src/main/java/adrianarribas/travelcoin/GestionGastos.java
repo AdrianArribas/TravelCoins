@@ -71,6 +71,17 @@ public class GestionGastos {
     public void borrarGasto(String compra, double precioyen){
         String sql="delete from gastos where compra='"+compra+"' and precioyen='"+precioyen+"'";
     }
+    public String gastoEmail(){
+        double eurostotal=0.0;
+        String mail="";
+        ArrayList<Gasto> AR;
+        AR=this.obtenerGastos();
+        for (int i=0;i<AR.size();i++){
+            eurostotal+=AR.get(i).getPrecioeuro();
+            mail+="Compra N:"+i+" / Fecha: "+AR.get(i).getFecha()+" | Detalles: "+ AR.get(i).getCompra()+" | Total Yens: "+AR.get(i).getPrecioyen()+"Y | Total Euros:"+AR.get(i).getPrecioeuro()+"€ | Total viaje"+eurostotal+"\n";
+        }
+        return mail;
+    }
 
     /*String creaTablaSql="create table gastos (";
         creaTablaSql+="_id integer primary key autoincrement,";
